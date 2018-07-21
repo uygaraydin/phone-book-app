@@ -13,15 +13,19 @@ function createWindow() {
 
   const size = {
     width: 700,
-    height: 400
+    height: 70
   };
 
   // Create the browser window.
   win = new BrowserWindow({
-    x: 0,
-    y: 0,
     width: size.width,
-    height: size.height
+    height: size.height,
+    useContentSize: true,
+    frame: false,
+    backgroundColor: '#80FFFFFF',
+    opacity: 0.95,
+    transparent: true,
+    hasShadow: true,
   });
 
   if (serve) {
@@ -36,7 +40,7 @@ function createWindow() {
     }));
   }
 
-  win.webContents.openDevTools();
+  /* win.webContents.openDevTools(); */
 
   // Emitted when the window is closed.
   win.on('closed', () => {

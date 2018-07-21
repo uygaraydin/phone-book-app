@@ -19,7 +19,8 @@
 .container {
   background: transparent;
   width: 700px;
-  min-height: 400px;
+  max-height: 400px;
+  overflow: hidden;
 
   .row {
     .col-md-12 {
@@ -47,6 +48,7 @@
     }
 
     .r-app {
+      position: relative;
 
       .search {
         position: relative;
@@ -59,7 +61,7 @@
         }
 
         input {
-          width: 620px;
+          width: 618px;
           padding-left: 80px;
           height: 65px;
           border-radius: 10px;
@@ -69,7 +71,7 @@
           color: #f2f2f2;
           position: relative;
           font-family: "ProximaNova-Semibold";
-          box-shadow: 10px 0px 20px rgba(0, 0, 0, 0.4);
+          // box-shadow: 10px 0px 20px rgba(0, 0, 0, 0.4);
 
           &:focus {
             outline: none;

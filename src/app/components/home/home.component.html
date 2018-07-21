@@ -28,10 +28,10 @@
                </svg>
                
               </figure>
-              <input type="text" placeholder="Rehberde Ara…" />
+              <input type="text" placeholder="Rehberde Ara…" #searchKey (keyup)="Search(searchKey.value)" />
           </div>
 
-          <div class="col-md-12 result">
+          <div class="col-md-12 result" #result style="display: none;">
               <div class="col-md-6 list">
                   <table>
                     <thead>
