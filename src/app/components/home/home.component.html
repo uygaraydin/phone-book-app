@@ -1,8 +1,8 @@
 <div class="container">
   <div class="row">
-      <div class="col-md-12 r-app">
+      <div class="col-md-10 r-app">
 
-          <div class="col-md-12 search">
+          <div class="col-md-10 search">
               <figure>
                   <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   viewBox="0 0 350 500" width="30" style="enable-background:new 0 0 350 500;" xml:space="preserve">
@@ -31,74 +31,62 @@
               <input type="text" placeholder="Rehberde Ara…" #searchKey (keyup)="Search(searchKey.value)" />
           </div>
 
-          <div class="col-md-12 result" #result style="display: none;">
+
+
+          <div class="col-md-10 result" #result>
               <div class="col-md-6 list">
-                  <table>
+                  <table #table>
                     <thead>
                       <th></th>
                       <th>Ünvan</th>
                       <th>Ad Soyad</th>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>Arş. Gör.</td>
-                        <td>Ahmet AKBAŞ</td>
-                      </tr>
-              
-                      <tr>
-                        <td>2</td>
-                        <td>Öğr. Gör.</td>
-                        <td>Ahmet AKIN</td>
-                      </tr>
-              
-                      <tr>
-                        <td>3</td>
-                        <td>Arş. Gör.</td>
-                        <td>Ahmet ALTIN</td>
-                      </tr>
-              
-                      <tr>
-                        <td>4</td>
-                        <td>Prof. Dr.</td>
-                        <td>Ahmet ALVER</td>
-                      </tr>
-              
-                      <tr>
-                        <td>5</td>
-                        <td>Öğr. Gör.</td>
-                        <td>Ahmet AŞİROĞLUsdsdsdsdsdsds</td>
+                    <tbody #list id="style-7">
+                      <tr *ngFor="let item of personel; let i = index" [attr.data-id]="item.dahili_id" [attr.data-index]="i + 1" [ngClass]="{ hover: i== 0 }">
+                        <td>{{i + 1}}</td>
+                        <td>{{item.unvan}}</td>
+                        <td>{{item.adsoyad}}</td>
                       </tr>
                     </tbody>
                   </table>
-                </div>
-                <div class="col-md-6 details">
-                    <div class="col-md-12 profile">
-                      <figure>
-                        <img src="https://placeimg.com/200/200/people" alt="">
-                      </figure>
-                      <h3>Arş. Gör. Ahmet AKBAŞ</h3>
-                    </div>
-      
-                    <div class="col-md-12 info">
-                      <ul>
-                        <li>
-                            <i class="fas fa-university"></i>
-                          <span>İktisadi ve İdari Bilimler Fakültesi</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                          <span>ahmet.akbas@erdogan.edu.tr</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                          <span>5173</span>
-                        </li>
-                      </ul>
-                    </div>
-                </div>
+              </div>
+              <div class="col-md-4 details">
+                  <div class="col-md-10 profile">
+                    <!-- <figure>
+                      <img src="https://placeimg.com/200/200/people" alt="">
+                    </figure> -->
+
+                    <div><h4>{{selected?.unvan}}</h4></div>
+                    <div><h3>{{selected?.adsoyad}}</h3></div>
+                    <div><h5>{{selected?.gorev}}</h5></div>
+                    
+                  </div>
+    
+                  <div class="col-md-10 info">
+                    <ul>
+                      <li>
+                          <i class="fas fa-university"></i>
+                        <span>{{selected?.birim}}</span>
+                      </li>
+                      <li>
+                          <i class="fas fa-envelope"></i>
+                        <span>{{selected?.mail}}</span>
+                      </li>
+                      <li>
+                          <i class="fas fa-phone"></i>
+                        <span>{{selected?.dahili}}</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="clearfix"></div>
+              </div>
+
+              <div class="clearfix"></div>
           </div>
 
-        </div>
+          <div class="clearfix"></div>
+
+      </div>
+      <div class="clearfix"></div>
   </div>
 </div>
