@@ -276,6 +276,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.searchList = this.personel.filter(a => new RegExp(event.target.value, 'gmi').test(a.adsoyad));
 
       if (event.target.value === '') {
+        this.noResult.nativeElement.style.display = 'none';
         this.searchList = [];
         this.HideResultList();
         this.selected = {};
