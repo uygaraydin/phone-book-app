@@ -21,10 +21,10 @@ function createWindow() {
     width: size.width,
     height: size.height,
     useContentSize: true,
-    frame: false,
+    frame: true, // TODO deployda false olacak
     backgroundColor: '#80FFFFFF',
     opacity: 0.95,
-    transparent: true,
+    transparent: false, // TODO deployda true olacak
     hasShadow: true,
   });
 

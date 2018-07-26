@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, Renderer, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Renderer, AfterViewInit, Input } from '@angular/core';
 import { ElectronService } from '../../providers/electron.service';
 
 @Component({
@@ -145,6 +145,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public selected: any;
   public searchList: any;
 
+  input = document.querySelector('input.searchKey');
+
   constructor(private electron: ElectronService, private renderer: Renderer) { }
 
   ngOnInit() {
@@ -152,15 +154,36 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   }
 
+
   ngAfterViewInit() {
+
+    this.input.addEventListener('keydown', this.IgnoreKey.apply(this, [38, 40]), false);
+    this.input.addEventListener('keypress', this.IgnoreKey.apply(this, [38, 40]), false);
+
+  }
+
+  /* TrackForResult (index: number, searchList: any): string {
+    return searchList.id;
+  } */
+
+
+  AddListenerResultList() {
 
     let active = document.querySelector('tr.hover');
 
     document.addEventListener('keydown', handler.bind(this));
 
     function handler(e) {
-            // console.log(e.which);
-            active.classList.remove('hover');
+
+        if (
+          (this.searchList.length > 0) &&
+          (active) &&
+          (e.keyCode !== 37) &&
+          (e.keyCode !== 39)
+        ) {
+
+        // console.log(e.which);
+        active.classList.remove('hover');
         if (e.which === 40) {
 
             active = active.nextElementSibling || active;
@@ -224,29 +247,49 @@ export class HomeComponent implements OnInit, AfterViewInit {
         } else {
             active = e.target;
         }
-
-            active.classList.add('hover');
+        active.classList.add('hover');
+        }
     }
+
+    this.ShowResultList();
+
   }
 
-  Search(searchKey) {
-    console.log(searchKey);
+  Search(event: any) {
 
-    /* if (searchKey !== '' && searchKey !== null && searchKey !== undefined) {
-      this.renderer.setElementStyle(this.resultElem.nativeElement, 'display', 'block');
-      this.renderer.setElementStyle(this.searchElem.nativeElement, 'box-shadow', '10px 0px 10px rgba(0, 0, 0, 0.4)');
+    console.log(event);
 
-      this.electron.window.setContentSize(700, 400, true);
+    if ((event.keyCode !== 37) && (event.keyCode !== 39)) {
 
-    } else {
-      this.electron.window.setContentSize(700, 70, true);
-      this.renderer.setElementStyle(this.resultElem.nativeElement, 'display', 'none');
-      this.renderer.setElementStyle(this.searchElem.nativeElement, 'box-shadow', 'none');
-    } */
+      console.log('girdi');
 
-    this.searchList = this.personel.filter(a => a.adsoyad.includes(searchKey));
-    console.log(this.searchList);
+      this.searchList = this.personel.filter(a => new RegExp(event.target.value, 'gmi').test(a.adsoyad));
 
+      if (event.target.value === '') {
+        this.searchList = [];
+      }
+
+      if (this.searchList.length > 0) {
+        this.ShowResultList();
+        this.AddListenerResultList();
+      }
+
+    }
+
+  }
+
+
+  ShowResultList() {
+    this.renderer.setElementStyle(this.resultElem.nativeElement, 'display', 'block');
+    this.renderer.setElementStyle(this.searchElem.nativeElement, 'box-shadow', '10px 0px 10px rgba(0, 0, 0, 0.4)');
+
+    this.electron.window.setContentSize(700, 400, true);
+  }
+
+  HideResultList() {
+    this.electron.window.setContentSize(700, 70, true);
+    this.renderer.setElementStyle(this.resultElem.nativeElement, 'display', 'none');
+    this.renderer.setElementStyle(this.searchElem.nativeElement, 'box-shadow', 'none');
   }
 
 
@@ -259,5 +302,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     // console.log(this.selected);
     // setInterval(() => { console.log(selected); }, 1000 * 2);
+  }
+
+  IgnoreKey(e, keys: Array<number>) {
+    for (let index = 0; index < keys.length; index++) {
+      if (e.keyCode === keys[index] ) {
+        e.preventDefault();
+      }
     }
+  }
+
+  DontIgnoreKey(e, keys: Array<number>) {
+    for (let index = 0; index < keys.length; index++) {
+      if (e.keyCode === keys[index] ) {
+        e.stopPropagation();
+      }
+    }
+  }
 }
+
