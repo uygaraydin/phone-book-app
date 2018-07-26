@@ -28,12 +28,12 @@
                </svg>
                
               </figure>
-              <input type="text" class="searchKey" placeholder="Rehberde Ara…" #searchKey (keyup)="Search($event)" />
+              <input type="text" class="searchKey" placeholder="Rehberde Ara…" #searchKey (keyup)="Search($event)" /> <span #noResult class="no-result"> &minus;&minus;&minus; Sonuç Yok</span> 
           </div>
 
 
 
-          <div class="col-md-10 result" #result>
+          <div class="col-md-10 result" #result style="display: none;">
               <div class="col-md-6 list">
                   <table #table>
                     <thead>
@@ -74,7 +74,7 @@
                       </li>
                       <li>
                           <i class="fas fa-envelope"></i>
-                        <span>{{selected?.mail}}</span>
+                        <span><a href="mailto:{{selected?.mail}}"></a>{{selected?.mail}}</span>
                       </li>
                       <li>
                           <i class="fas fa-phone"></i>

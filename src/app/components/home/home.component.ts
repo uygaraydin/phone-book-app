@@ -12,6 +12,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('searchKey') searchElem: ElementRef;
   @ViewChild('list') list: ElementRef;
   @ViewChild('table') table: ElementRef;
+  @ViewChild('noResult') noResult: ElementRef;
 
 
   public personel = [
@@ -157,9 +158,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
 
-    this.input.addEventListener('keydown', this.IgnoreKey.apply(this, [38, 40]), false);
-    this.input.addEventListener('keypress', this.IgnoreKey.apply(this, [38, 40]), false);
+    if (this.input) {
+      this.input.addEventListener('keydown', this.IgnoreKey.apply(this, [38, 40]), false);
+      this.input.addEventListener('keypress', this.IgnoreKey.apply(this, [38, 40]), false);
 
+
+      this.input[0].focus();
+      this.input[0].onblur = function () {
+          setTimeout(function () {
+            this.input[0].focus();
+          });
+      };
+    }
   }
 
   /* TrackForResult (index: number, searchList: any): string {
@@ -178,8 +188,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         if (
           (this.searchList.length > 0) &&
           (active) &&
-          (e.keyCode !== 37) &&
-          (e.keyCode !== 39)
+          (e.keyCode === 40) ||
+          (e.keyCode === 38)
         ) {
 
         // console.log(e.which);
@@ -267,11 +277,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       if (event.target.value === '') {
         this.searchList = [];
+        this.HideResultList();
+        this.selected = {};
       }
 
       if (this.searchList.length > 0) {
+        this.noResult.nativeElement.style.display = 'none';
+        this.selected = this.searchList[0];
         this.ShowResultList();
         this.AddListenerResultList();
+
+      } else {
+        this.selected = {};
+        this.HideResultList();
+        this.noResult.nativeElement.style.display = 'inline-block';
       }
 
     }

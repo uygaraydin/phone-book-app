@@ -120,6 +120,19 @@
 
       .search {
         position: relative;
+
+        .no-result {
+          position: absolute;
+          right: 30px;
+          font-family: "ProximaNova-Light";
+          font-size: 16px;
+          top:0;
+          color: #f2f2f2;
+          opacity: 0.4;
+          top:26px;
+          display: none;
+        }
+
         figure {
           all: unset;
           position: absolute;
@@ -129,8 +142,9 @@
         }
 
         input {
-          width: 618px;
+          width: 498px;
           padding-left: 80px;
+          padding-right: 120px;
           height: 65px;
           border-radius: 10px;
           background-color: #358E8A;
