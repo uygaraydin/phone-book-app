@@ -282,6 +282,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       this.searchList = this.personel.filter(a => new RegExp(event.target.value, 'gmi').test(a.adsoyad));
 
+      // ! boş parametre gönderince tüm kayıtları dödüğü için kod tekrarı yaptık (1)
       if (event.target.value === '') {
         this.noResult.nativeElement.style.display = 'none';
         this.searchList = [];
@@ -299,6 +300,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.selected = {};
         this.HideResultList();
         this.noResult.nativeElement.style.display = 'inline-block';
+
+        // ! boş parametre gönderince tüm kayıtları dödüğü için kod tekrarı yaptık (1)
+        if (event.target.value === '') {
+          this.noResult.nativeElement.style.display = 'none';
+          this.searchList = [];
+          this.HideResultList();
+          this.selected = {};
+        }
       }
 
     }

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen, Tray, Menu, globalShortcut } from 'electron';
+import { app, BrowserWindow, screen, Tray, Menu, globalShortcut, shell } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
@@ -37,18 +37,32 @@ function createWindow() {
 
   tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
-  {label: 'Yardım', click: (item, window, event) => {
-    // console.log(item, event);
+    {
+      label: 'Göster',
+      click: (item, window, event) => {
+        win.show();
+      },
+      accelerator: 'CommandOrControl+Alt+R'
+    },
+    {
+      label: 'Yardım',
+      click: (item, window, event) => {
+        // console.log(item, event);
+        shell.openExternal('http://bidb.idari.erdogan.edu.tr/tr/news-detail/universitemiz-antivirus-programi-yenilendi/666');
 
-  }},
-  {type: 'separator'},
-  {label: 'Çıkış', click: (item, window, event) => {
-    // console.log(item, event);
-
-  }},
+      },
+      accelerator: 'CommandOrControl+Alt+Y'
+    },
+    {type: 'separator'},
+    {
+      label: 'Çıkış',
+      click: (item, window, event) => {
+        win.close();
+      }
+    },
   ]);
   tray.setToolTip('RTEÜ Telefon Rehberi Uygulaması');
-  tray.setTitle('RTEÜ Telefon Rehberi Uygulaması'); // macOS only
+  /* tray.setTitle('RTEÜ Telefon Rehberi Uygulaması'); // macOS only */
   tray.setContextMenu(contextMenu);
 
 
