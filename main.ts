@@ -48,6 +48,7 @@ function createWindow() {
   }},
   ]);
   tray.setToolTip('RTEÜ Telefon Rehberi Uygulaması');
+  tray.setTitle('RTEÜ Telefon Rehberi Uygulaması'); // macOS only
   tray.setContextMenu(contextMenu);
 
 

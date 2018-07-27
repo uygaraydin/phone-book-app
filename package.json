@@ -1,11 +1,8 @@
 {
-  "name": "angular-electron",
-  "version": "4.1.0",
-  "description": "Angular 6 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/angular-electron",
+  "name": "rehber-app",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Öğr. Gör. Uygar AYDİN",
+    "email": "iletisi@uygaraydin.com"
   },
   "keywords": [
     "angular",
