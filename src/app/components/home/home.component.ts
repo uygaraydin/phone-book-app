@@ -145,8 +145,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ];
   public selected: any;
   public searchList: any;
+  private cursorPositionInInput: number;
 
-  input = document.querySelector('input.searchKey');
+  // ! input elementinin bazı metodlarını kullanabilmek için typescript e HTMLInputElement türünde tanımlamalıyız
+  input: HTMLInputElement;
 
   constructor(private electron: ElectronService, private renderer: Renderer) { }
 
@@ -158,26 +160,28 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
 
-    if (this.input) {
-      this.input.addEventListener('keydown', this.IgnoreKey.apply(this, [38, 40]), false);
-      this.input.addEventListener('keypress', this.IgnoreKey.apply(this, [38, 40]), false);
+    this.input = <HTMLInputElement>document.querySelector('input.searchKey');
+
+    this.electron.window.on('show', () => {
+      this.input.focus();
+      this.input.select();
+    });
 
 
-      this.input[0].focus();
-      this.input[0].onblur = function () {
-          setTimeout(function () {
-            this.input[0].focus();
-          });
-      };
+    this.input.addEventListener('keydown', function(e) {
+      if (e.which === 38 || e.which === 40) {
+        e.preventDefault();
+      }
+    });
 
-      this.electron.window.show();
+    this.input.addEventListener('keypress', function(e) {
+      if (e.which === 38 || e.which === 40) {
+        e.preventDefault();
+      }
+    });
 
-      this.electron.window.on('show', () => {
-        this.input[0].select();
-        console.log('göründü');
-      });
-    }
   }
+
 
   /* TrackForResult (index: number, searchList: any): string {
     return searchList.id;
@@ -192,14 +196,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     function handler(e) {
 
-        if (
-          (this.searchList.length > 0) &&
-          (active) &&
-          (e.keyCode === 40) ||
-          (e.keyCode === 38)
-        ) {
+      if ((this.searchList.length > 0) &&
+      (active) &&
+      ((e.keyCode === 40) ||
+      (e.keyCode === 38))) {
 
-        // console.log(e.which);
         active.classList.remove('hover');
         if (e.which === 40) {
 
@@ -211,17 +212,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
             // ! html elementi angularda kullanmak için cast etmelisin
             const activeElem = <HTMLElement>active;
 
-            console.log('aşağı');
+            /* console.log('aşağı'); */
             /* console.log('önceki hoverlı hover offset ' + activeElem.offsetTop);
             console.log('önceki hoverlı scroll top ' + this.list.nativeElement.scrollTop);
             console.log('önceki hoverlı tbody offset ' + this.list.nativeElement.offsetTop);
             console.log('önceki hoverlı tbody yüksekliği ' + this.list.nativeElement.clientHeight);
-            console.log(' ');
+            console.log(' ');*/
 
-            console.log(); */
-
-
-            // tslint:disable-next-line:max-line-length
             if (activeElem.offsetTop - this.list.nativeElement.scrollTop === this.table.nativeElement.clientHeight ) {
 
               this.list.nativeElement.scrollTop = this.list.nativeElement.scrollTop + activeElem.clientHeight;
@@ -243,14 +240,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
             // ! html elementi angularda kullanmak için cast etmelisin
             const activeElem = <HTMLElement>active;
 
-            console.log('yukarı');
+            /* console.log('yukarı'); */
             // console.log(activeElem.getAttribute('data-index'));
 
-            console.log('önceki hoverlı hover offset ' + activeElem.offsetTop);
+            /* console.log('önceki hoverlı hover offset ' + activeElem.offsetTop);
             console.log('önceki hoverlı scroll top ' + this.list.nativeElement.scrollTop);
             console.log('önceki hoverlı tbody offset ' + this.list.nativeElement.offsetTop);
             console.log('önceki hoverlı tbody yüksekliği ' + this.list.nativeElement.clientHeight);
-            console.log(' ');
+            console.log(' '); */
 
 
             // tslint:disable-next-line:max-line-length
@@ -264,8 +261,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
         } else {
             active = e.target;
         }
+
         active.classList.add('hover');
-        }
+      }
+
     }
 
     this.ShowResultList();
@@ -274,15 +273,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   Search(event: any) {
 
-    console.log(event);
-
-    if ((event.keyCode !== 37) && (event.keyCode !== 39)) {
-
-      console.log('girdi');
+    if ((event.keyCode !== 37) && (event.keyCode !== 38) && (event.keyCode !== 39) && (event.keyCode !== 40)) {
 
       this.searchList = this.personel.filter(a => new RegExp(event.target.value, 'gmi').test(a.adsoyad));
 
-      // ! boş parametre gönderince tüm kayıtları dödüğü için kod tekrarı yaptık (1)
+      // ! boş parametre gönderince tüm kayıtları döndüğü için kod tekrarı yaptık (1)
       if (event.target.value === '') {
         this.noResult.nativeElement.style.display = 'none';
         this.searchList = [];
@@ -292,7 +287,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       if (this.searchList.length > 0) {
         this.noResult.nativeElement.style.display = 'none';
-        this.selected = this.searchList[0];
         this.ShowResultList();
         this.AddListenerResultList();
 
@@ -301,7 +295,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.HideResultList();
         this.noResult.nativeElement.style.display = 'inline-block';
 
-        // ! boş parametre gönderince tüm kayıtları dödüğü için kod tekrarı yaptık (1)
+        // ! boş parametre gönderince tüm kayıtları döndüğü için kod tekrarı yaptık (1)
         if (event.target.value === '') {
           this.noResult.nativeElement.style.display = 'none';
           this.searchList = [];
@@ -311,11 +305,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
 
     }
-
   }
 
-
   ShowResultList() {
+
+    const firstTr = document.querySelector('tr');
+
+    firstTr.classList.add('hover');
+
     this.renderer.setElementStyle(this.resultElem.nativeElement, 'display', 'block');
     this.renderer.setElementStyle(this.searchElem.nativeElement, 'box-shadow', '10px 0px 10px rgba(0, 0, 0, 0.4)');
 
@@ -328,7 +325,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.renderer.setElementStyle(this.searchElem.nativeElement, 'box-shadow', 'none');
   }
 
-
   ViewSelectedDetail(id: number) {
 
     // tslint:disable-next-line:triple-equals
@@ -336,24 +332,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     // ! * .filter liste, .find tek kayıt döner
 
-    // console.log(this.selected);
-    // setInterval(() => { console.log(selected); }, 1000 * 2);
-  }
-
-  IgnoreKey(e, keys: Array<number>) {
-    for (let index = 0; index < keys.length; index++) {
-      if (e.keyCode === keys[index] ) {
-        e.preventDefault();
-      }
-    }
-  }
-
-  DontIgnoreKey(e, keys: Array<number>) {
-    for (let index = 0; index < keys.length; index++) {
-      if (e.keyCode === keys[index] ) {
-        e.stopPropagation();
-      }
-    }
   }
 }
 

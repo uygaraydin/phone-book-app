@@ -45,7 +45,6 @@
                       <tr *ngFor="let item of searchList; let i = index; let isLast = last;"
                       [attr.data-id]="item.dahili_id"
                       [attr.data-index]="i + 1"
-                      [ngClass]="{ hover: i== 0 }"
                       [attr.ready]="last ? true : false">
                         <td>{{i + 1}}</td>
                         <td>{{item.unvan}}</td>

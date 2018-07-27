@@ -11,7 +11,7 @@ let tray: Tray = null;
 function createWindow() {
 
   const electronScreen = screen;
-  /* const size = electronScreen.getPrimaryDisplay().workAreaSize; */
+  const screenSize = electronScreen.getPrimaryDisplay().workAreaSize;
 
   const size = {
     width: 700,
@@ -22,11 +22,13 @@ function createWindow() {
   win = new BrowserWindow({
     width: size.width,
     height: size.height,
+    x: (screenSize.width / 2) - (size.width / 2),
+    y: screenSize.height * 0.2,
     useContentSize: true,
-    frame: true, // TODO deployda false olacak
+    frame: false, // TODO deployda false olacak
     backgroundColor: '#80FFFFFF',
     opacity: 0.95,
-    transparent: false, // TODO deployda true olacak
+    transparent: true, // TODO deployda true olacak
     hasShadow: true,
     skipTaskbar: true,
     minimizable: false,
@@ -62,8 +64,9 @@ function createWindow() {
     },
   ]);
   tray.setToolTip('RTEÜ Telefon Rehberi Uygulaması');
-  /* tray.setTitle('RTEÜ Telefon Rehberi Uygulaması'); // macOS only */
+  // tray.setTitle('RTEÜ Telefon Rehberi Uygulaması'); // macOS only
   tray.setContextMenu(contextMenu);
+  tray.setHighlightMode('never');
 
 
   tray.on('right-click', () => {
@@ -73,6 +76,7 @@ function createWindow() {
   tray.on('click', () => {
     win.show();
     console.log('soltık');
+    // ? Context Men kullanıldığında click event i görmezden geliniyor
   });
 
  /*  win.on('show', () => {
@@ -99,7 +103,7 @@ function createWindow() {
     }));
   }
 
-  win.webContents.openDevTools();
+  /* win.webContents.openDevTools(); */
   win.once('ready-to-show', () => {
 
   });
@@ -123,6 +127,7 @@ function createWindow() {
 
 try {
 
+  app.dock.hide();
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
