@@ -1,10 +1,12 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, Tray, Menu, globalShortcut } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
 let win, serve;
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
+
+let tray: Tray = null;
 
 function createWindow() {
 
@@ -26,7 +28,49 @@ function createWindow() {
     opacity: 0.95,
     transparent: false, // TODO deployda true olacak
     hasShadow: true,
+    skipTaskbar: true,
+    minimizable: false,
+    show: false
   });
+
+  const iconPath = path.join(__dirname, 'src/assets/favicon-16x16.png');
+
+  tray = new Tray(iconPath);
+  const contextMenu = Menu.buildFromTemplate([
+  {label: 'Yardım', click: (item, window, event) => {
+    // console.log(item, event);
+
+  }},
+  {type: 'separator'},
+  {label: 'Çıkış', click: (item, window, event) => {
+    // console.log(item, event);
+
+  }},
+  ]);
+  tray.setToolTip('RTEÜ Telefon Rehberi Uygulaması');
+  tray.setContextMenu(contextMenu);
+
+
+  tray.on('right-click', () => {
+    console.log('sağtık');
+  });
+
+  tray.on('click', () => {
+    win.show();
+    console.log('soltık');
+  });
+
+ /*  win.on('show', () => {
+    console.log('göründü');
+  }); */
+
+  /* win.on('show', () => {
+    tray.setHighlightMode('always');
+  });
+
+  win.on('hide', () => {
+    tray.setHighlightMode('never');
+  }); */
 
   if (serve) {
     require('electron-reload')(__dirname, {
@@ -41,13 +85,24 @@ function createWindow() {
   }
 
   win.webContents.openDevTools();
+  win.once('ready-to-show', () => {
+
+  });
+
+  win.on('blur', ev => {
+    win.hide();
+  });
 
   // Emitted when the window is closed.
-  win.on('closed', () => {
+  win.on('closed', ev => {
     // Dereference the window object, usually you would store window
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     win = null;
+  });
+
+  globalShortcut.register('CommandOrControl+Alt+R', () => {
+    win.show();
   });
 }
 

@@ -169,6 +169,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.input[0].focus();
           });
       };
+
+      this.electron.window.show();
+
+      this.electron.window.on('show', () => {
+        this.input[0].select();
+        console.log('göründü');
+      });
     }
   }
 
