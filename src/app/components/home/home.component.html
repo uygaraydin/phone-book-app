@@ -28,13 +28,13 @@
                </svg>
                
               </figure>
-              <input type="text" class="searchKey" placeholder="Rehberde Ara…" #searchKey (keyup)="Search($event)" /> <span #noResult class="no-result"> &minus;&minus;&minus; Sonuç Yok</span> 
+              <input type="text" minlength="3" class="searchKey" placeholder="Rehberde Ara…" #searchKey (keyup)="Search($event)" /> <span #noResult class="no-result"> &minus;&minus;&minus; Sonuç Yok</span><span #searchInstitue class="search-institue"> Birime Göre Ara:</span> 
           </div>
 
 
 
           <div class="col-md-10 result" #result style="display: none;">
-              <div class="col-md-6 list">
+              <div class="col-md-5 list">
                   <table #table>
                     <thead>
                       <th></th>
@@ -45,15 +45,16 @@
                       <tr *ngFor="let item of searchList; let i = index; let isLast = last;"
                       [attr.data-id]="item.dahili_id"
                       [attr.data-index]="i + 1"
-                      [attr.ready]="last ? true : false">
+                      [ngClass]="{ hover: i == 0 }"
+                      [attr.ready]="isLast ? true : false">
                         <td>{{i + 1}}</td>
-                        <td>{{item.unvan}}</td>
+                        <td>{{item.unvan_adi}}</td>
                         <td>{{item.adsoyad}}</td>
                       </tr>
                     </tbody>
                   </table>
               </div>
-              <div class="col-md-4 details">
+              <div class="col-md-5 details">
                   <div class="col-md-10 profile">
                     <!-- <figure>
                       <img src="https://placeimg.com/200/200/people" alt="">
@@ -69,15 +70,18 @@
                     <ul>
                       <li>
                           <i class="fas fa-university"></i>
-                        <span>{{selected?.birim}}</span>
+                          <span>{{selected?.birim}} <span *ngIf="selected?.altbirim">/ {{selected?.altbirim}}</span>  </span>
+                          <div class="clearfix"></div>
                       </li>
-                      <li>
+                      <li *ngIf="selected?.email">
                           <i class="fas fa-envelope"></i>
-                        <span><a href="mailto:{{selected?.mail}}"></a>{{selected?.mail}}</span>
+                          <span><a href="mailto:{{selected?.email}}"></a>{{selected?.email}}</span>
+                          <div class="clearfix"></div>
                       </li>
                       <li>
                           <i class="fas fa-phone"></i>
-                        <span>{{selected?.dahili}}</span>
+                          <span>{{selected?.telefon}} - <span *ngIf="selected?.dahili">{{selected?.dahili}}</span></span>
+                          <div class="clearfix"></div>
                       </li>
                     </ul>
                   </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, Renderer, AfterViewInit, Input } from '@angular/core';
 import { ElectronService } from '../../providers/electron.service';
+import { PersonelService } from '../../providers/personel.service';
+import { PersonelModel } from '../../models/personelModel';
 
 @Component({
   selector: 'app-home',
@@ -13,144 +15,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('list') list: ElementRef;
   @ViewChild('table') table: ElementRef;
   @ViewChild('noResult') noResult: ElementRef;
+  @ViewChild('searchInstitue') searchInstitue: ElementRef;
 
 
-  public personel = [
-      {
-        dahili_id: 1,
-        unvan: 'Arş Gör.',
-        adsoyad: 'Ahmet AKBAŞ',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 2,
-        unvan: 'Öğr. Gör.',
-        adsoyad: 'Ahmet AKIN',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 3,
-        unvan: 'Arş Gör.',
-        adsoyad: 'Ahmet ALTIN',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 4,
-        unvan: 'Arş Gör.',
-        adsoyad: 'Ahmet ALVER',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 5,
-        unvan: 'Öğr. Gör.',
-        adsoyad: 'Ahmet AŞİROĞLU',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 6,
-        unvan: 'Arş Gör.',
-        adsoyad: 'Ahmet AKBAŞ',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 7,
-        unvan: 'Arş Gör.',
-        adsoyad: 'Ahmet AKBAŞ',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 8,
-        unvan: 'Arş Gör.',
-        adsoyad: 'Ahmet AKBAŞ',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 9,
-        unvan: 'Arş Gör.',
-        adsoyad: 'Ahmet AKBAŞ',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 10,
-        unvan: 'Arş Gör.',
-        adsoyad: 'Ahmet AKBAŞ',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 11,
-        unvan: 'Arş Gör.',
-        adsoyad: 'Ahmet AKBAŞ',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 12,
-        unvan: 'Arş Gör.',
-        adsoyad: 'Ahmet AKBAŞ',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 13,
-        unvan: 'Arş Gör.',
-        adsoyad: 'Ahmet AKBAŞ',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-      {
-        dahili_id: 14,
-        unvan: 'Arş Gör.',
-        adsoyad: 'Ahmet AKBAŞ',
-        birim: 'İktisadi ve İdari Bilimler Fakültesi' ,
-        dahili: '5173',
-        gorev: 'Öğretim Üyesi',
-        mail: 'ahmet.akbas@erdogan.edu.tr'
-      },
-  ];
+
   public selected: any;
-  public searchList: any;
+  public searchList: PersonelModel[];
   private cursorPositionInInput: number;
+  private active;
 
   // ! input elementinin bazı metodlarını kullanabilmek için typescript e HTMLInputElement türünde tanımlamalıyız
   input: HTMLInputElement;
 
-  constructor(private electron: ElectronService, private renderer: Renderer) { }
+  constructor(private electron: ElectronService, private renderer: Renderer, private personelService: PersonelService) { }
 
   ngOnInit() {
 
@@ -180,6 +57,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     });
 
+    document.addEventListener('keydown', this.handler.bind(this));
+
   }
 
 
@@ -188,29 +67,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
   } */
 
 
-  AddListenerResultList() {
+  handler(e) {
 
-    let active = document.querySelector('tr.hover');
+    if ((e.keyCode === 40) || (e.keyCode === 38)) {
+      this.active = document.querySelector('tr.hover');
+      console.log(this.active);
 
-    document.addEventListener('keydown', handler.bind(this));
+      if ((this.searchList) &&
+          (this.active)) {
 
-    function handler(e) {
+            this.active.classList.remove('hover');
 
-      if ((this.searchList.length > 0) &&
-      (active) &&
-      ((e.keyCode === 40) ||
-      (e.keyCode === 38))) {
-
-        active.classList.remove('hover');
         if (e.which === 40) {
 
-            active = active.nextElementSibling || active;
-            this.ViewSelectedDetail(active.getAttribute('data-id'));
+          this.active = this.active.nextElementSibling || this.active;
+            this.ViewSelectedDetail(this.active.getAttribute('data-id'));
 
 
 
             // ! html elementi angularda kullanmak için cast etmelisin
-            const activeElem = <HTMLElement>active;
+            const activeElem = <HTMLElement>this.active;
 
             /* console.log('aşağı'); */
             /* console.log('önceki hoverlı hover offset ' + activeElem.offsetTop);
@@ -234,11 +110,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
         } else if (e.which === 38) {
 
-            active = active.previousElementSibling || active;
-            this.ViewSelectedDetail(active.getAttribute('data-id'));
+          this.active = this.active.previousElementSibling || this.active;
+            this.ViewSelectedDetail(this.active.getAttribute('data-id'));
 
             // ! html elementi angularda kullanmak için cast etmelisin
-            const activeElem = <HTMLElement>active;
+            const activeElem = <HTMLElement>this.active;
 
             /* console.log('yukarı'); */
             // console.log(activeElem.getAttribute('data-index'));
@@ -259,59 +135,68 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
         } else {
-            active = e.target;
+          this.active = e.target;
         }
 
-        active.classList.add('hover');
+        this.active.classList.add('hover');
       }
-
-    }
-
-    this.ShowResultList();
-
+      }
   }
 
   Search(event: any) {
 
-    if ((event.keyCode !== 37) && (event.keyCode !== 38) && (event.keyCode !== 39) && (event.keyCode !== 40)) {
+    if (event.target.value.length < 3) {
 
-      this.searchList = this.personel.filter(a => new RegExp(event.target.value, 'gmi').test(a.adsoyad));
+      // this.noResult.nativeElement.style.display = 'none';
+      this.searchList = [];
+      this.HideResultList();
+      this.selected = {};
 
-      // ! boş parametre gönderince tüm kayıtları döndüğü için kod tekrarı yaptık (1)
-      if (event.target.value === '') {
-        this.noResult.nativeElement.style.display = 'none';
-        this.searchList = [];
-        this.HideResultList();
-        this.selected = {};
-      }
+    }
 
-      if (this.searchList.length > 0) {
-        this.noResult.nativeElement.style.display = 'none';
-        this.ShowResultList();
-        this.AddListenerResultList();
+    if (event.target.value === 'b/') {
+      event.target.value = '';
+      event.target.placeholder = '';
+      event.target.style.paddingLeft = '260px';
+      this.searchInstitue.nativeElement.style.display = 'inline';
+    }
 
-      } else {
-        this.selected = {};
-        this.HideResultList();
-        this.noResult.nativeElement.style.display = 'inline-block';
+    if (
+        (event.keyCode !== 37) &&
+        (event.keyCode !== 38) &&
+        (event.keyCode !== 39) &&
+        (event.keyCode !== 40) &&
+        (event.target.value.length > 2) ) {
 
-        // ! boş parametre gönderince tüm kayıtları döndüğü için kod tekrarı yaptık (1)
-        if (event.target.value === '') {
-          this.noResult.nativeElement.style.display = 'none';
-          this.searchList = [];
-          this.HideResultList();
-          this.selected = {};
+      // this.searchList = this.personel.filter(a => new RegExp(event.target.value, 'gmi').test(a.adsoyad));
+
+      this.personelService.Search(event.target.value).subscribe(
+        response => this.searchList = response['rows'],
+        err => console.log(err),
+        () => {
+
+          if (this.searchList.length > 0) {
+
+            // this.noResult.nativeElement.style.display = 'none';
+            this.ShowResultList();
+
+          } else {
+
+            this.selected = {};
+            this.HideResultList();
+            this.noResult.nativeElement.style.display = 'inline-block';
+
+          }
         }
-      }
+      );
 
+      /* setTimeout(function() {
+        this.AddListenerResultList();
+      }, 3000); */
     }
   }
 
   ShowResultList() {
-
-    const firstTr = document.querySelector('tr');
-
-    firstTr.classList.add('hover');
 
     this.renderer.setElementStyle(this.resultElem.nativeElement, 'display', 'block');
     this.renderer.setElementStyle(this.searchElem.nativeElement, 'box-shadow', '10px 0px 10px rgba(0, 0, 0, 0.4)');
@@ -320,15 +205,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   HideResultList() {
-    this.electron.window.setContentSize(700, 70, true);
+    /* this.electron.window.setContentSize(700, 70, true);
     this.renderer.setElementStyle(this.resultElem.nativeElement, 'display', 'none');
-    this.renderer.setElementStyle(this.searchElem.nativeElement, 'box-shadow', 'none');
+    this.renderer.setElementStyle(this.searchElem.nativeElement, 'box-shadow', 'none'); */
   }
 
   ViewSelectedDetail(id: number) {
 
     // tslint:disable-next-line:triple-equals
-    this.selected = this.personel.find(a => a.dahili_id == id);
+    // this.selected = this.personel.find(a => a.dahili_id == id);
+
+    this.personelService.GetByID(id).subscribe(
+      response => this.selected = response,
+      err => console.log(err),
+      () => {
+        console.log(this.selected);
+      }
+    );
 
     // ! * .filter liste, .find tek kayıt döner
 
