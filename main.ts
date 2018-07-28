@@ -32,7 +32,7 @@ function createWindow() {
     hasShadow: true,
     skipTaskbar: true,
     minimizable: false,
-    show: true
+    show: false
   });
 
   const iconPath = path.join(__dirname, 'src/assets/favicon-16x16.png');
@@ -103,14 +103,14 @@ function createWindow() {
     }));
   }
 
-  win.webContents.openDevTools();
+  /* win.webContents.openDevTools(); */
   win.once('ready-to-show', () => {
 
   });
 
   // ! pencere dışına tıklandığında gizlensin
   win.on('blur', ev => {
-    // win.hide();
+    win.hide();
   });
 
   // Emitted when the window is closed.

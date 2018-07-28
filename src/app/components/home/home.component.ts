@@ -147,7 +147,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     if (event.target.value.length < 3) {
 
-      // this.noResult.nativeElement.style.display = 'none';
+      this.noResult.nativeElement.style.display = 'none';
       this.searchList = [];
       this.HideResultList();
       this.selected = {};
@@ -177,7 +177,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
           if (this.searchList.length > 0) {
 
-            // this.noResult.nativeElement.style.display = 'none';
+            this.noResult.nativeElement.style.display = 'none';
             this.ShowResultList();
 
           } else {
@@ -205,9 +205,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   HideResultList() {
-    /* this.electron.window.setContentSize(700, 70, true);
+    this.electron.window.setContentSize(700, 70, true);
     this.renderer.setElementStyle(this.resultElem.nativeElement, 'display', 'none');
-    this.renderer.setElementStyle(this.searchElem.nativeElement, 'box-shadow', 'none'); */
+    this.renderer.setElementStyle(this.searchElem.nativeElement, 'box-shadow', 'none');
   }
 
   ViewSelectedDetail(id: number) {
