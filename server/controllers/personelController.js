@@ -72,6 +72,34 @@ var Personel={
                 rows
             });
         });
+    },
+
+    searchByInstitue:function(req, res, next){
+
+        var reqObj = req.body;
+        searchKey = reqObj.q;
+
+        return db.query(
+            `SELECT
+            d.dahili_id,
+            d.adsoyad,
+            b.birim,
+            d.altbirim,
+            d.gorev,
+            d.email,
+            d.telefon,
+            d.dahili,
+            u.unvan_adi
+            FROM rurehber.dahililer d 
+            INNER JOIN rurehber.unvanlar u ON d.unvan = u.unvan_id
+            INNER JOIN rurehber.birimler b ON d.birim = b.birim_id
+            WHERE b.birim LIKE ?`,
+            '%' + searchKey + '%',function(err, rows, fields){
+            if (err) throw err;
+            res.status(200).json({
+                rows
+            });
+        });
     }
      
 };

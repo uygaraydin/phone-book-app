@@ -62,7 +62,7 @@
 
                     <div><h4>{{selected?.unvan}}</h4></div>
                     <div><h3>{{selected?.adsoyad}}</h3></div>
-                    <div><h5>{{selected?.gorev}}</h5></div>
+                    <div *ngIf="selected?.gorev"><h5>{{selected?.gorev}}</h5></div>
                     
                   </div>
     

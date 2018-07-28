@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public searchList: PersonelModel[];
   private cursorPositionInInput: number;
   private active;
+  private searchInstitueMode = false;
 
   // ! input elementinin bazı metodlarını kullanabilmek için typescript e HTMLInputElement türünde tanımlamalıyız
   input: HTMLInputElement;
@@ -145,6 +146,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   Search(event: any) {
 
+    if (event.target.value.length === 0 && this.searchInstitueMode && (event.keyCode === 46 || event.keyCode === 8)) {
+
+      event.target.placeholder = 'Rehberde Ara…';
+      event.target.style.paddingLeft = '80px';
+      this.searchInstitue.nativeElement.style.display = 'none';
+      this.searchInstitueMode = false;
+
+    }
+
     if (event.target.value.length < 3) {
 
       this.noResult.nativeElement.style.display = 'none';
@@ -159,6 +169,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       event.target.placeholder = '';
       event.target.style.paddingLeft = '260px';
       this.searchInstitue.nativeElement.style.display = 'inline';
+      this.searchInstitueMode = true;
     }
 
     if (
@@ -170,25 +181,47 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       // this.searchList = this.personel.filter(a => new RegExp(event.target.value, 'gmi').test(a.adsoyad));
 
-      this.personelService.Search(event.target.value).subscribe(
-        response => this.searchList = response['rows'],
-        err => console.log(err),
-        () => {
+      if (!this.searchInstitueMode) {
+        this.personelService.Search(event.target.value).subscribe(
+          response => this.searchList = response['rows'],
+          err => console.log(err),
+          () => {
 
-          if (this.searchList.length > 0) {
+            if (this.searchList.length > 0) {
 
-            this.noResult.nativeElement.style.display = 'none';
-            this.ShowResultList();
+              this.noResult.nativeElement.style.display = 'none';
+              this.ShowResultList();
 
-          } else {
+            } else {
 
-            this.selected = {};
-            this.HideResultList();
-            this.noResult.nativeElement.style.display = 'inline-block';
+              this.selected = {};
+              this.HideResultList();
+              this.noResult.nativeElement.style.display = 'inline-block';
 
+            }
           }
-        }
-      );
+        );
+      } else {
+        this.personelService.SearchByInstitue(event.target.value).subscribe(
+          response => this.searchList = response['rows'],
+          err => console.log(err),
+          () => {
+
+            if (this.searchList.length > 0) {
+
+              this.noResult.nativeElement.style.display = 'none';
+              this.ShowResultList();
+
+            } else {
+
+              this.selected = {};
+              this.HideResultList();
+              this.noResult.nativeElement.style.display = 'inline-block';
+
+            }
+          }
+        );
+      }
 
       /* setTimeout(function() {
         this.AddListenerResultList();

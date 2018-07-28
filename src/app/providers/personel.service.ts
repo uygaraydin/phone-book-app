@@ -31,5 +31,19 @@ export class PersonelService {
 
     }
 
+    SearchByInstitue(searchKey) {
+
+        const parametersJson = {
+            q: searchKey
+        };
+
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+        });
+
+        return this.http.post<PersonelModel[]>('http://localhost:4600/personel/searchByInstitue', parametersJson, { headers: headers });
+
+    }
+
 
 }
