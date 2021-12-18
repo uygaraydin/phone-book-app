@@ -1,0 +1,20 @@
+var mysql = require('mysql');
+port = process.env.PORT || 4200;
+
+if (port === 4200) {
+    var connection = mysql.createConnection({
+        host: 'localhost',
+        port: '',
+        insecureAuth: true,
+        user: '',
+        password: '',
+        database: ''
+    });
+
+} else {
+
+    //same as above, with live server details
+}
+
+
+module.exports = connection;

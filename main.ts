@@ -40,14 +40,14 @@ function createWindow() {
   tray = new Tray(iconPath);
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'Göster',
+      label: 'Show',
       click: (item, window, event) => {
         win.show();
       },
       accelerator: 'CommandOrControl+Alt+R'
     },
     {
-      label: 'Yardım',
+      label: 'Help',
       click: (item, window, event) => {
         // console.log(item, event);
         shell.openExternal('http://bidb.idari.erdogan.edu.tr/tr/news-detail/universitemiz-antivirus-programi-yenilendi/666');
@@ -57,25 +57,25 @@ function createWindow() {
     },
     {type: 'separator'},
     {
-      label: 'Çıkış',
+      label: 'Exit',
       click: (item, window, event) => {
         win.close();
       }
     },
   ]);
-  tray.setToolTip('RTEÜ Telefon Rehberi Uygulaması');
+  tray.setToolTip('Phone Directory App');
   // tray.setTitle('RTEÜ Telefon Rehberi Uygulaması'); // macOS only
   tray.setContextMenu(contextMenu);
   tray.setHighlightMode('never');
 
 
   tray.on('right-click', () => {
-    console.log('sağtık');
+    console.log('Right Click!');
   });
 
   tray.on('click', () => {
     win.show();
-    console.log('soltık');
+    console.log('Left Click!');
     // ? Context Men kullanıldığında click event i görmezden geliniyor
   });
 
@@ -93,7 +93,7 @@ function createWindow() {
 
   if (serve) {
     require('electron-reload')(__dirname, {
-     electron: require(`${__dirname}/node_modules/electron`)});
+      electron: require(`${__dirname}/node_modules/electron`)});
     win.loadURL('http://localhost:4200');
   } else {
     win.loadURL(url.format({
