@@ -44,4 +44,4 @@ package-lock.json
 
 # System Files
 .DS_Store
-Thumbs.db
+Thumbs.dbdbconnection.js
