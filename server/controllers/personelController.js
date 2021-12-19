@@ -9,7 +9,7 @@ var Personel = {
             console.log(rows[0]);
         });
     }, */
-
+    // ! sql querys must move to databese folder
     getById: function (req, res, next) {
         console.log(req.params.id);
         const id = req.params.id;
